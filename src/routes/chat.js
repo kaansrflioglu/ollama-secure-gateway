@@ -14,5 +14,6 @@ router.post('/generate', chatController.generate);
 
 // Route to list available local models
 router.get('/models', chatController.listModels);
+router.get('/tags', chatController.listModels);
 
 module.exports = router;
