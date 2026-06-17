@@ -9,7 +9,7 @@ const ollama = new Ollama({ host: ollamaHost });
  * Supports streaming if requested.
  */
 exports.chat = async (req, res, next) => {
-  const { model, messages, stream, options } = req.body;
+  const { model, messages, stream, options, keep_alive } = req.body;
 
   if (!model || !messages || !Array.isArray(messages)) {
     return res.status(400).json({
@@ -29,7 +29,8 @@ exports.chat = async (req, res, next) => {
         model,
         messages,
         stream: true,
-        options
+        options,
+        keep_alive
       });
 
       for await (const chunk of responseStream) {
@@ -42,7 +43,8 @@ exports.chat = async (req, res, next) => {
         model,
         messages,
         stream: false,
-        options
+        options,
+        keep_alive
       });
       res.json({ success: true, data: response });
     }
@@ -57,7 +59,7 @@ exports.chat = async (req, res, next) => {
  * Supports streaming if requested.
  */
 exports.generate = async (req, res, next) => {
-  const { model, prompt, system, stream, options } = req.body;
+  const { model, prompt, system, stream, options, keep_alive } = req.body;
 
   if (!model || !prompt) {
     return res.status(400).json({
@@ -78,7 +80,8 @@ exports.generate = async (req, res, next) => {
         prompt,
         system,
         stream: true,
-        options
+        options,
+        keep_alive
       });
 
       for await (const chunk of responseStream) {
@@ -92,7 +95,8 @@ exports.generate = async (req, res, next) => {
         prompt,
         system,
         stream: false,
-        options
+        options,
+        keep_alive
       });
       res.json({ success: true, data: response });
     }
