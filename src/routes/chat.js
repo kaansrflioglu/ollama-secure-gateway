@@ -16,4 +16,7 @@ router.post('/generate', chatController.generate);
 router.get('/models', chatController.listModels);
 router.get('/tags', chatController.listModels);
 
+// Route to list currently running models
+router.get('/ps', chatController.ps);
+
 module.exports = router;

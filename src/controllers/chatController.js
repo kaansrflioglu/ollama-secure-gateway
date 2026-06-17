@@ -114,3 +114,16 @@ exports.listModels = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Returns a list of models currently loaded into memory (active/running models).
+ */
+exports.ps = async (req, res, next) => {
+  try {
+    const response = await ollama.ps();
+    res.json({ success: true, models: response.models || [] });
+  } catch (error) {
+    console.error('[Ollama ps Controller Error]:', error.message);
+    next(error);
+  }
+};
