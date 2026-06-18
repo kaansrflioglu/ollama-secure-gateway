@@ -13,8 +13,8 @@ app.use(helmet());
 app.use(cors());
 
 // Parse JSON request bodies (increased limit to support multimodal models and large payloads)
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Rate limiting middleware to prevent abuse
 const limiter = rateLimit({
