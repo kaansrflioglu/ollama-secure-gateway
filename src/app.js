@@ -54,9 +54,27 @@ app.use((req, res, next) => {
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Global Error Handler:', err);
-  res.status(err.statusCode || 500).json({
+
+  const statusCode = err.status_code || err.statusCode || 500;
+  let errorMessage = err.message || 'Internal Server Error';
+
+  // If the error comes from Ollama SDK as a ResponseError (JSON string in err.error)
+  if (err.error && typeof err.error === 'string') {
+    try {
+      const parsedError = JSON.parse(err.error);
+      if (parsedError.error && parsedError.error.message) {
+        errorMessage = parsedError.error.message;
+      } else if (parsedError.message) {
+        errorMessage = parsedError.message;
+      }
+    } catch (e) {
+      // Keep err.message if parsing fails
+    }
+  }
+
+  res.status(statusCode).json({
     success: false,
-    error: err.message || 'Internal Server Error'
+    error: errorMessage
   });
 });
 
